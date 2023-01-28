@@ -1,0 +1,1 @@
+alter table questions add column answer_id uuid references answers(id);
