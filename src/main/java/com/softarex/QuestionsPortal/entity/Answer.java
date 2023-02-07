@@ -9,37 +9,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.boot.SpringApplication;
 
 import java.util.UUID;
-
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")//, uniqueConstraints =@UniqueConstraint(columnNames = "email"))
-public class User {
-
+@Table(name = "answers")
+public class Answer {
     @Id
     @Column(name = "id")
     @UuidGenerator
     private UUID id;
+    @Column(name = "content")
+    private String content;
+    @Column(name = "answer_type")
+    private AnswerType answerType;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "number")
-    private String number;
-
-
+    @Column(name = "question_id")
+    private UUID question_id;
 }

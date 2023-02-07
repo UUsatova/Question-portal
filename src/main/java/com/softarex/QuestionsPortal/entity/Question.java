@@ -12,34 +12,26 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")//, uniqueConstraints =@UniqueConstraint(columnNames = "email"))
-public class User {
-
+@Table(name = "questions")
+public class Question {
     @Id
     @Column(name = "id")
     @UuidGenerator
     private UUID id;
-
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "number")
-    private String number;
-
+    @Column(name = "content")
+    private String content;
+    @Column(name = "answer_id")
+    private UUID answerId;
+    @Column(name = "question_recipient_id")
+    private UUID questionRecipientId;
+    @Column(name = "question_sender_id")
+    private UUID questionSenderId;
+    @Column(name = "answer_type")
+    private AnswerType answerType;
 
 }

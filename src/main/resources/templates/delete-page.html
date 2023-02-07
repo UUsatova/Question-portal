@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Spring Security Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+    <style>
+
+        .tab {
+            background: #200122;
+            background: -webkit-linear-gradient(to bottom, #6f0000, #200122);
+            background: linear-gradient(to bottom, #6f0000, #200122);
+            padding: 40px 50px;
+            position: relative;
+            border-radius: 20px;
+        }
+
+        .tab:before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(#2e3a6a, #2f0b45);
+            opacity: 0.85;
+            border-radius: 20px;
+        }
+        .form-group  {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: capitalize;
+            opacity: .85;
+        }
+        .alert{
+            background: thistle;
+            opacity: .999;
+            color: #2f0b45;
+            border-radius: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #eec111;
+            padding: 10px 20px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin: 20px 0 30px 0;
+        }
+
+        .navbar {
+            background: #200122;
+            background: linear-gradient(#2e3a6a,#2f0b45);
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<th:block th:replace="fragments/header :: header"></th:block>
+<br><br><br><br><br><br><br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="tab">
+                <!-- error message -->
+
+
+            <form th:action="@{/user/delete}" method="post">
+                <div class="form-group">
+                    <h3 >delete profile</h3>
+                    <div th:if="${param.error}">
+                        <div class="alert">Something goes wrong.Try again.</div>
+                    </div>
+                    <label for="password">Confirm Password</label>:
+                    <input type="password" id="password" name="password"
+                           class="form-control" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="delete-submit"
+                                   id="delete-submit"
+                                   class="btn"
+                                   value="delete"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Employee Management System</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+
+        .tab {
+            background: #200122;
+            background: -webkit-linear-gradient(to bottom, #6f0000, #200122);
+            background: linear-gradient(to bottom, #6f0000, #200122);
+            padding: 40px 50px;
+            position: relative;
+            border-radius: 20px;
+        }
+
+        .tab:before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(#2e3a6a, #2f0b45);
+            opacity: 0.85;
+            border-radius: 20px;
+        }
+         .form-group  {
+             font-size: 14px;
+             font-weight: bold;
+             color: #fff;
+             text-transform: capitalize;
+             opacity: .85;
+        }
+        .navbar {
+            background: #200122;
+            background: linear-gradient(#2e3a6a,#2f0b45);
+        }
+    </style>
+</head>
+<body>
+
+<th:block th:replace="fragments/header :: header"></th:block>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6"> <!-- ?????? ? ???????? ???????-->
+
+
+
+            <br><br><br><br><br><br><br>
+
+
+            <div class="tab">
+
+                <hr>
+                <div class="form-group">
+                <h3> profile data</h3>
+
+
+                <ul >
+
+                    <li>email:
+                        <th th:text="${user.email}">email</th>
+                    </li>
+                    <li>firstName:
+                        <th th:text="${user.firstName}">firstName</th>
+                    </li>
+                    <li>lastName:
+                        <th th:text="${user.lastName}">lastName</th>
+                    </li>
+                    <li>number:
+                        <th th:text="${user.number}">number</th>
+                    </li>
+                        </div >
+                </ul>
+
+                <hr>
+
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
