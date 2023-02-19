@@ -1,8 +1,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
 <style>
     a:hover, a:focus {
@@ -191,6 +192,18 @@
         background: linear-gradient(#2e3a6a,#2f0b45);
     }
 
+    .alert {
+        height: 20px;
+        border: none;
+        border-radius: 20px;
+        box-shadow: none;
+        padding: 0 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: mediumvioletred;
+        transition: all 0.3s ease 0s;
+    }
+
 
     @media only screen and (max-width: 479px) {
         .tab {
@@ -215,28 +228,40 @@
                         <div class="form-group">
                             <label for="firstName">First Name</label>
                             <input th:field="*{firstName}" type="text" class="form-control" id="firstName">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" >Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name</label>
                             <input th:field="*{lastName}" type="text" class="form-control" id="lastName">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" >Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="number">Number</label>
                             <input th:field="*{number}" type="tel" class="form-control" id="number">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('number')}" th:errors="*{number}" >Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input th:field="*{email}" type="email" class="form-control" id="email">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" >Incorrect date</p>
+
                         </div>
 
                         <div class="form-group">
                             <label for="password">current Password</label>
                             <input th:field="*{password}" type="password" class="form-control" id="password">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" >Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="helperPassword">New Password</label>
                             <input th:field="*{helperPassword}" type="password" class="form-control"
                                    id="helperPassword">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('helperPassword')}" th:errors="*{helperPassword}" >Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-default">Update data</button>

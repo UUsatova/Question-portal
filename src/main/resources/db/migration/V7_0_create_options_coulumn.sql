@@ -1,0 +1,1 @@
+alter table questions add column options text;

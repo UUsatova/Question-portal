@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 public class UserDtoWithPassword extends UserDto {
 
     @NotNull(groups = {Creation.class})
-    @Size(min=8,groups = {Creation.class,Update.class})
+    @Size(min=8,groups = {Creation.class},message = "Password should contain more than 8 letters")
     private String password;
 
     @NotNull(groups = {Creation.class})
-    @Size(min=8,groups = {Creation.class,Update.class})
+    @Size(min=8,groups = {Creation.class}) //возможно написать свою реаизацию валидации
     private String helperPassword;
 
 }

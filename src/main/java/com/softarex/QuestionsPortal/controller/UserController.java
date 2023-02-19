@@ -1,10 +1,17 @@
 package com.softarex.QuestionsPortal.controller;
 
 import com.softarex.QuestionsPortal.dto.UserDtoWithPassword;
+import com.softarex.QuestionsPortal.entity.User;
+import com.softarex.QuestionsPortal.exception.IncorrectPasswordException;
+import com.softarex.QuestionsPortal.group.Creation;
+import com.softarex.QuestionsPortal.group.Update;
 import com.softarex.QuestionsPortal.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +31,13 @@ public class UserController {
     }
 
     @PostMapping("registration")
-    public String registerUserAccount(@ModelAttribute("user") /*@Validated(Creation.class)*/ UserDtoWithPassword registrationDto) {
+    public String registerUserAccount(@ModelAttribute("user") @Validated(Creation.class) UserDtoWithPassword registrationDto, BindingResult result, Model model) {
+        if (result.hasErrors() || registrationDto.getPassword() != registrationDto.getHelperPassword()) {
+            result.addError(new FieldError("user", "helperPassword", "Passwords dont match"));
+            return "registration-page";
+        }
         userService.addUser(registrationDto);
-        return  "redirect:/login-page?success"; //+на логин редирект + позволения расставить
+        return "redirect:/login?success";
     }
 
     @GetMapping("/show")
@@ -49,16 +60,35 @@ public class UserController {
 
     @GetMapping("/update")
     public String showUpdateUserForm(Model model) {
-        model.addAttribute("user",userService.getUserDtoWithPasswordOfAuthenticatedUser());
+        model.addAttribute("user", userService.getUserDtoWithPasswordOfAuthenticatedUser());
         return "update-page";
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") /*@Validated(Creation.class)*/UserDtoWithPassword updateUserDto) {
-        userService.updateUser(updateUserDto); //либо вынести апдейт пароля отдельно либо убрать принудитьельное заполнение
+    public String updateUser(@ModelAttribute("user") @Validated(Update.class) UserDtoWithPassword updateUserDto, BindingResult result, Model model) throws IncorrectPasswordException {
+        String authUserEmail = userService.getAuthenticatedUser().getEmail();
+        User authUser = userService.getUserByEmail(authUserEmail);
+        boolean isPasswordWillBeChanged = !updateUserDto.getHelperPassword().equals("");
+        boolean isPasswordWrong =  isPasswordWillBeChanged && !authUser.getPassword().equals(updateUserDto.getPassword())  ;
+        boolean isEmailChanged = !authUserEmail.equals(updateUserDto.getEmail());
+        boolean isChangedEmailAlreadyExist = isEmailChanged && userService.getUserByEmail(updateUserDto.getEmail())!=null;
+
+        if (result.hasErrors() || isPasswordWrong || isChangedEmailAlreadyExist) {
+            if (isChangedEmailAlreadyExist) {
+                result.addError(new FieldError("user", "email", "User with such email already exists"));
+            }
+            if (isPasswordWrong) {
+                result.addError(new FieldError("user", "password", "Wrong password"));
+            }
+            return "update-page";
+        }
+        User user = userService.updateUser(updateUserDto); //разлогинить после смены email
+        if (isEmailChanged) return "redirect:/login"; //высылалать письмо + сообщение на фронт
         return "redirect:/user/show";
     }
 
 }
-
-//+формы
+//Выглядит как много много логики в контроллере но по идее эти все разветвления необходимы
+//для корректного отображения формы,а значит должны относится к слою контроллера
+//изначально я думала эти все ошибки делать через хэндлер,но потом поняла что конкретно сетать на форму
+//таким образом гораздо более адекватно чем через хэндлер

@@ -2,16 +2,18 @@ package com.softarex.QuestionsPortal.mapper;
 
 import com.softarex.QuestionsPortal.dto.UserDto;
 import com.softarex.QuestionsPortal.entity.User;
+import com.softarex.QuestionsPortal.service.UserService;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper
-public interface UserMapper {
+public interface  UserMapper {
 
-    UserMapper MAPPER = Mappers.getMapper(UserMapper.class); // надо ли
     UserDto userToDto(User user);
     User dtoToUser(UserDto userDto);
 

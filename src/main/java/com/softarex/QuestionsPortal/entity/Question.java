@@ -27,11 +27,15 @@ public class Question {
     private String content;
     @Column(name = "answer_id")
     private UUID answerId;
-    @Column(name = "question_recipient_id")
-    private UUID questionRecipientId;
-    @Column(name = "question_sender_id")
-    private UUID questionSenderId;
+    @Column(name = "recipient_id")
+    private UUID recipientId;
+    @Column(name = "sender_id")
+    private UUID senderId;
     @Column(name = "answer_type")
     private AnswerType answerType;
+    @Column(name = "options")
+    private String options;
+
+    //добавить  время
 
 }

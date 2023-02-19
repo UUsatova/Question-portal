@@ -183,6 +183,17 @@
         box-shadow: none;
     }
 
+    .alert {
+        height: 20px;
+        border: none;
+        border-radius: 20px;
+        box-shadow: none;
+        padding: 0 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: mediumvioletred;
+        transition: all 0.3s ease 0s;
+    }
 
 
     @media only screen and (max-width: 479px) {
@@ -210,28 +221,47 @@
                         <div class="form-group">
                             <label for="firstName">First Name</label>
                             <input th:field="*{firstName}" type="text" class="form-control" id="firstName">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
+                               th:errors="*{firstName}">Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name</label>
                             <input th:field="*{lastName}" type="text" class="form-control" id="lastName">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"
+                               th:errors="*{lastName}">Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="number">Number</label>
                             <input th:field="*{number}" type="tel" class="form-control" id="number">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('number')}" th:errors="*{number}">
+                                Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input th:field="*{email}" type="email" class="form-control" id="email">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                Incorrect date</p>
+
                         </div>
 
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input th:field="*{password}" type="password" class="form-control" id="password">
+                            <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
+                               th:errors="*{password}">Incorrect date</p>
+
                         </div>
                         <div class="form-group">
                             <label for="helperPassword">Confirm Password</label>
                             <input th:field="*{helperPassword}" type="password" class="form-control"
                                    id="helperPassword">
+                            <p class="alert alert-danger" th:if="${user.password != user.helperPassword}"
+                               th:errors="*{helperPassword}" >Passwords dont match</p>
+
+
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-default">Sign up</button>
@@ -243,4 +273,5 @@
 
         </div><!-- /.col-md-offset-3 col-md-6 -->
     </div><!-- /.row -->
+
 </div>
