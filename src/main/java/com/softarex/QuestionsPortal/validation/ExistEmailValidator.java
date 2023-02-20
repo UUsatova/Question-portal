@@ -15,6 +15,6 @@ public class ExistEmailValidator implements
     private final UserRepository userRepository;
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
-        return userRepository.existsByEmail(email);
+        return userRepository.findActiveUserByEmail(email) != null;
     }
 }

@@ -42,5 +42,8 @@ public class User {
     @Column(name = "number")
     private String number;
 
+    @Column(name = "isactive")//переименоваать
+    private boolean isActive=true;
+
 
 }

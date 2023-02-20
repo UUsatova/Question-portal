@@ -3,6 +3,7 @@ package com.softarex.QuestionsPortal.controller;
 
 import com.softarex.QuestionsPortal.dto.QuestionDto;
 import com.softarex.QuestionsPortal.group.Creation;
+import com.softarex.QuestionsPortal.group.Update;
 import com.softarex.QuestionsPortal.mapper.QuestionMapper;
 import com.softarex.QuestionsPortal.service.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class QuestionController {
 
     @GetMapping("/delete/{id}")
     public String deleteQuestion(@PathVariable UUID id) {
-        questionService.deleteQuestion(id);
+        questionService.softDeleteQuestion(id);
         return "redirect:/questions";
     }
 
@@ -58,7 +59,11 @@ public class QuestionController {
     }
 
     @PostMapping("/update")
-    public String updateQuestion( @ModelAttribute("question") QuestionDto questionDto){
+    public String updateQuestion(Model model, @ModelAttribute("question") @Validated(Update.class) QuestionDto questionDto, BindingResult result){
+        if (result.hasErrors()) {
+            model.addAttribute("allQuestionsUserAsked", questionService.getListWithDtoOffAllQuestionsUserAsked());
+            return "questions-page";
+        }
         questionService.updateQuestion(questionDto);
         return "redirect:/questions";
     }

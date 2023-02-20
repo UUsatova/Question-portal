@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +26,13 @@ public class QuestionDto {
     private String content;
     private UUID answerId;//надо ли answer content
     @ExistAndActive(groups = {Creation.class, Update.class},message = "Wrong user email")
-    private String recipientEmail; //валидациия
+    private String recipientEmail;
     private String senderEmail;
     private AnswerType answerType;
     private String options="";
+    private LocalDateTime localDateTime;
+
+    public String getLocalDateTimeString(){
+        return localDateTime.format(DateTimeFormatter.ofPattern("d:MMM:uuuu HH:mm:ss"));
+    }
 }

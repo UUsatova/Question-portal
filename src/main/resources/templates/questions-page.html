@@ -67,6 +67,7 @@
                     <th scope="col">Question</th>
                     <th scope="col">Answer type</th>
                     <th scope="col">Answer</th>
+                    <th scope="col">Time</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -76,6 +77,7 @@
                     <td th:text="${question.content}">Onions</td>
                     <td th:text="${question.answerType.getDisplayValue()}">2.41</td>
                     <td th:text="${question.answerId}">yes</td>
+                    <td th:text="${question.getLocalDateTimeString()}">yes</td>
                     <td>
                         <div class="edit">
                         <button  th:data-id="${question.id}"  type="button" data-toggle="modal" class="btn btn-outline-dark">edit</button>
@@ -112,14 +114,14 @@
                                     <label for="recipient-name" class="col-form-label text-dark">For User:</label>
                                     <input th:field="*{recipientEmail}" type="text" class="form-control"
                                            id="recipient-name"  >
-                                    <p class="alert alert-danger" th:if="${#fields.hasErrors('recipientEmail')}" th:errors="*{recipientEmail}" >Incorrect date</p>
-                                    <script th:inline="javascript" th:if="${#fields.hasErrors('recipientEmail')}">$("#createQuestionModal").modal("show");</script>
+                                    <p id="emailError" class="alert alert-danger" th:if="${#fields.hasErrors('recipientEmail')}" th:errors="*{recipientEmail}" >Incorrect date</p>
+                                    <script id="scr1" th:inline="javascript" th:if="${#fields.hasErrors('recipientEmail') }">$("#createQuestionModal").modal("show");</script>
                                 </div>
                                 <div class="form-group">
                                     <label for="questionContent" class="col-form-label text-dark">Question:</label>
                                     <input th:field="*{content}" type="text" class="form-control" id="questionContent">
-                                    <p class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" >Incorrect date</p>
-                                    <script th:inline="javascript" th:if="${#fields.hasErrors('content')}">$("#createQuestionModal").modal("show");</script>
+                                    <p  class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" >Incorrect date</p>
+                                    <script id="scr2"  th:inline="javascript" th:if="${#fields.hasErrors('content') }">$("#createQuestionModal").modal("show");</script>
 
                                 </div>
                                 <div class="input-group mb-3">
@@ -205,27 +207,32 @@
                     });
 
                 });
-                $(document).ready(function () {
-                    $('.edit').on('click', function (event) {
-                        event.preventDefault();
-                        console.log( $(this).find('.btn').attr('data-id'));
-                        var rowId = $(this).find('.btn').attr('data-id');
+                function editFunc (event) {
+                    event.preventDefault();
+                    console.log( $(this).find('.btn').attr('data-id'));
+                    var rowId = $(this).find('.btn').attr('data-id');
 
-                        var href = "/questions/"+rowId;
-                        var $modal = $('#createQuestionModal').clone().removeAttr('id');
+                    var href = "/questions/"+rowId;
+                    var $modal = $('#createQuestionModal').clone().attr('id','editQuestionWindow');
 
-                        $.get(href,function (question,status){
-                            $modal.find('exampleModalLabel').text("Edit question")
-                            $modal.find('#questionId').val(question.id);
-                            $modal.find('#recipient-name').remove();
-                            $modal.find('[for="recipient-name"]').remove();
-                            $modal.find('#questionContent').val(question.content);
-                            $modal.find('#answerType').val(question.answerType);
-                        })
-                        $modal.find('form').attr('action','/questions/update');
+                    $.get(href,function (question,status){
+                        $modal.find('exampleModalLabel').text("Edit question")
+                        $modal.find('#questionId').val(question.id);
+                        $modal.find('#recipient-name').val(question.recipientEmail).hide();
+                        $modal.find('#emailError').remove();
+                        $modal.find('[for="recipient-name"]').remove();
+                        $modal.find('#questionContent').val(question.content);
+                        $modal.find('#answerType').val(question.answerType);
 
-                         $modal.modal();
-                    });
+                        $modal.find('#scr2').html($("#editQuestionWindow").modal("show"))
+                        $modal.find('#scr1').html('');
+                    })
+                    $modal.find('form').attr('action','/questions/update');
+
+                    $modal.modal();
+                }
+                $(document).ready( function () {
+                    $('.edit').on('click',editFunc );
 
                 });
             </script>

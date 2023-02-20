@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,7 +36,9 @@ public class Question {
     private AnswerType answerType;
     @Column(name = "options")
     private String options;
-
-    //добавить  время
+    @Column(name = "isactive")//переименовать
+    private boolean isActive=true;
+    @Column(name = "time")
+    private LocalDateTime localDateTime;
 
 }
