@@ -1,12 +1,16 @@
 package com.softarex.QuestionsPortal.controller;
 
+import com.softarex.QuestionsPortal.dto.EmailTemplate;
 import com.softarex.QuestionsPortal.dto.UserDtoWithPassword;
 import com.softarex.QuestionsPortal.entity.User;
 import com.softarex.QuestionsPortal.exception.IncorrectPasswordException;
 import com.softarex.QuestionsPortal.group.Creation;
 import com.softarex.QuestionsPortal.group.Update;
+import com.softarex.QuestionsPortal.service.EmailService;
 import com.softarex.QuestionsPortal.service.QuestionService;
 import com.softarex.QuestionsPortal.service.UserService;
+import jakarta.mail.MessagingException;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     private final UserService userService;
     private final QuestionService questionService;
+    private final EmailService emailService;
+    private final String CREATION="create";
+    private final String DELETE="delete";
 
     @GetMapping("registration")
     public String showRegistrationForm(Model model) {
@@ -34,12 +41,14 @@ public class UserController {
 
     //ситуация когда в базе есть неактивный юзер с таким же имейлом
     @PostMapping("registration")
-    public String registerUserAccount(@ModelAttribute("user") @Validated(Creation.class) UserDtoWithPassword registrationDto, BindingResult result, Model model) {
-        if (result.hasErrors() || registrationDto.getPassword() != registrationDto.getHelperPassword()) {
+    public String registerUserAccount(@ModelAttribute("user") @Validated(Creation.class) UserDtoWithPassword registrationDto, BindingResult result, Model model) throws MessagingException {
+        if (result.hasErrors() || !registrationDto.getPassword().equals(registrationDto.getHelperPassword()) ){
             result.addError(new FieldError("user", "helperPassword", "Passwords dont match"));
             return "registration-page";
         }
-        userService.addUser(registrationDto);
+        User createdUser = userService.addUser(registrationDto);
+        EmailTemplate email = emailService.getUserCreateEmailTemplate(createdUser,CREATION);
+        emailService.sendMail(email);
         return "redirect:/login?success";
     }
 
@@ -56,10 +65,12 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public String deleteUser(@ModelAttribute("password") String password) {
+    public String deleteUser(@ModelAttribute("password") String password) throws MessagingException {
+        User deletedUser = userService.getAuthenticatedUser();
+        EmailTemplate email = emailService.getUserCreateEmailTemplate(deletedUser,DELETE);
+        emailService.sendMail(email);
         if (userService.softDeleteUser(password)) {
-            questionService.softDeleteAllUserQuestions();
-            //answer.softDeleteAllUserAnswer();
+            questionService.softDeleteAllUserQuestions(deletedUser.getId());
             return "redirect:/user/registration";
 
         }

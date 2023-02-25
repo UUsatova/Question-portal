@@ -3,6 +3,7 @@ package com.softarex.QuestionsPortal.service;
 
 import com.softarex.QuestionsPortal.dto.QuestionDto;
 import com.softarex.QuestionsPortal.entity.Question;
+import com.softarex.QuestionsPortal.entity.User;
 import com.softarex.QuestionsPortal.exception.ItemNotFoundException;
 import com.softarex.QuestionsPortal.mapper.QuestionMapper;
 import com.softarex.QuestionsPortal.repository.QuestionRepository;
@@ -28,14 +29,13 @@ public class QuestionService {
         return questionRepository.findById(id).orElseThrow(()->new ItemNotFoundException());
     }
 
-    public List<Question> getAllQuestionsUserAsked(){ //проверка удален он или нет
-        UUID idOfAuthUser = appService.getAuthenticatedUser().getId();
-        return questionRepository.findActiveQuestionsBySenderId(idOfAuthUser,  Sort.by(Sort.Direction.DESC,"localDateTime"));
+    public List<Question> getAllQuestionsUserAsked(UUID userID){ //проверка удален он или нет
+        return questionRepository.findActiveQuestionsBySenderId(userID,  Sort.by(Sort.Direction.DESC,"localDateTime"));
     }
 
     public List<QuestionDto> getListWithDtoOffAllQuestionsUserAsked(){
         List<QuestionDto> questionDtoList = new ArrayList<>();
-        for(Question question : getAllQuestionsUserAsked()){
+        for(Question question : getAllQuestionsUserAsked(appService.getAuthenticatedUser().getId())){
             questionDtoList.add(questionMapper.questionToDto(question));
         }
         return questionDtoList;
@@ -59,8 +59,8 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public void  softDeleteAllUserQuestions(){
-        for (Question question: getAllQuestionsUserAsked() ){
+    public void  softDeleteAllUserQuestions(UUID userId){
+        for (Question question: getAllQuestionsUserAsked(userId) ){
             question.setActive(false);
             questionRepository.save(question);
         }

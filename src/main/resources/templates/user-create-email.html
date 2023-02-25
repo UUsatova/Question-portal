@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h3><span>Hello <p th:text="${firstName} + ' ' + ${lastName} "/> </span></h3>
+<h5><span>Account successfully created.</span></h5>
+<h5><span>Creation time <p th:text="${time}"></p></span></h5>
+</body>
+</html>

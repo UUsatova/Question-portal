@@ -28,7 +28,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
 
-    @GetMapping//задать обратный порядок вывода(сверху самые поздние)
+    @GetMapping
     public String viewHomePage(Model model){
         model.addAttribute("allQuestionsUserAsked", questionService.getListWithDtoOffAllQuestionsUserAsked());
         model.addAttribute("question", new QuestionDto());
