@@ -56,9 +56,11 @@
                 <button type="button" class="btn btn-outline-dark float-sm-right" data-toggle="modal"
                         data-target="#createQuestionModal">+ Add question
                 </button>
+                <button type="button" class="btn btn-outline-dark float-sm-right" id="addRow">+ Add row
+                </button>
             </h3>
 
-            <table class="table">
+            <table class="table" id="myTable">
 
 
                 <thead>
@@ -76,7 +78,7 @@
                     <td th:text="${question.recipientEmail}">yes</td>
                     <td th:text="${question.content}">Onions</td>
                     <td th:text="${question.answerType.getDisplayValue()}">2.41</td>
-                    <td th:text="${question.answerId}">yes</td>
+                    <td th:text="${question.answerDto.content}">yes</td>
                     <td th:text="${question.getLocalDateTimeString()}">yes</td>
                     <td>
                         <div class="edit">
@@ -234,6 +236,12 @@
                 $(document).ready( function () {
                     $('.edit').on('click',editFunc );
 
+                });
+                $(document).ready(function () {
+                    $('#addRow').on('click', function () {
+                        $("#myTable").prepend("<tr><td>my data</td><td>more data</td></tr>");
+
+                        });
                 });
             </script>
         </div>

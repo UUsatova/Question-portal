@@ -24,13 +24,14 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
     private final AppService appService;
+    private static final Sort SORT =  Sort.by(Sort.Direction.DESC,"localDateTime");
 
     public Question getQuestionById(UUID id){
-        return questionRepository.findById(id).orElseThrow(()->new ItemNotFoundException());
+        return questionRepository.findById(id).orElseThrow(ItemNotFoundException::new);
     }
 
     public List<Question> getAllQuestionsUserAsked(UUID userID){ //проверка удален он или нет
-        return questionRepository.findActiveQuestionsBySenderId(userID,  Sort.by(Sort.Direction.DESC,"localDateTime"));
+        return questionRepository.findActiveQuestionsBySenderId(userID,  SORT);
     }
 
     public List<QuestionDto> getListWithDtoOffAllQuestionsUserAsked(){
@@ -42,9 +43,17 @@ public class QuestionService {
 
     }
 
-    public List<Question> getAllQuestionsUserAnswered(){
-        UUID idOfAuthUser = appService.getAuthenticatedUser().getId();
-        return questionRepository.findActiveQuestionsByRecipientId(idOfAuthUser);
+    public List<Question> getAllQuestionsUserReceived(UUID userId){
+        return questionRepository.findActiveQuestionsByRecipientId(userId,  SORT);
+    }
+
+    public List<QuestionDto> getListWithDtoOffAllQuestionsUserReceived(){
+        List<QuestionDto> questionDtoList = new ArrayList<>();
+        for(Question question : getAllQuestionsUserReceived(appService.getAuthenticatedUser().getId())){
+            questionDtoList.add(questionMapper.questionToDto(question));
+        }
+        return questionDtoList;
+
     }
 
     public Question addQuestion(QuestionDto questionDto){
@@ -71,6 +80,12 @@ public class QuestionService {
         Question questionBeforeChanges = getQuestionById(questionChanges.getId());
         Question questionAfterChanges = questionMapper.updateQuestion(questionChanges,questionBeforeChanges);
         questionAfterChanges.setLocalDateTime(LocalDateTime.now());
+        return questionRepository.save(questionAfterChanges);
+    }
+
+    public Question updateQuestion(Question questionWithChanges){
+        Question questionBeforeChanges = getQuestionById(questionWithChanges.getId());
+        Question questionAfterChanges = questionMapper.updateQuestion(questionWithChanges,questionBeforeChanges);
         return questionRepository.save(questionAfterChanges);
     }
 

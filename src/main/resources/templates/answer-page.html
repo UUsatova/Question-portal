@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Boot Thymeleaf Application - Bootstrap Modal</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <style>
+        .tab {
+            background: #200122;
+            background: -webkit-linear-gradient(to bottom, #6f0000, #200122);
+            background: linear-gradient(to bottom, #6f0000, #200122);
+            padding: 40px 50px;
+            position: relative;
+            border-radius: 20px;
+        }
+
+        .tab:before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(#2e3a6a, #2f0b45);
+            opacity: 0.85;
+            border-radius: 20px;
+        }
+
+        .form-group {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: capitalize;
+            opacity: .85;
+        }
+
+        .navbar {
+            background: #200122;
+            background: linear-gradient(#2e3a6a, #2f0b45);
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="fragments/header :: header"></th:block>
+<br><br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-11"> <!-- ?????? ? ???????? ???????-->
+
+            <h3>Received questions</h3>
+
+            <table class="table" id="myTable">
+
+
+                <thead>
+                <tr>
+                    <th scope="col">From user</th>
+                    <th scope="col">Question</th>
+                    <th scope="col">Question time</th>
+                    <th scope="col">Answer type</th>
+                    <th scope="col">Answer</th>
+                    <th scope="col">Answer time</th>
+
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tr th:each="question, itemStat : ${allQuestionsUserReceived}">
+                    <td th:text="${question.senderEmail}"></td>
+                    <td th:text="${question.content}"></td>
+                    <td th:text="${question.getLocalDateTimeString()}"></td>
+                    <td th:text="${question.answerType.getDisplayValue()}"></td>
+                    <td th:text="${question.answerDto.content}"></td>
+                    <td th:text="${question.answerDto.getLocalDateTimeString()}"></td>
+                    <td>
+                        <div class="edit">
+                            <button th:data-id="${question.id}" type="button" data-toggle="modal"
+                                    class="btn btn-outline-dark">edit
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Answer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <h6 class="text-dark bold"> From User: <span
+                                        id="sender-name"></span></h6>
+                            </div>
+                            <div class="form-group">
+                                <h6 class="text-dark bold"> Question: <span
+                                        id="questionContent"></span></h6>
+                            </div>
+                            <div class="form-group">
+                                <h6 class="text-dark bold"> Answer type: <span
+                                        id="answerType"></span></h6>
+                            </div>
+
+                            <form th:action="@{/answers}" method="post" th:object="${answer}">
+                                <div hidden="hidden">
+                                    <label for="questionId" class="col-form-label text-dark"></label>
+                                    <input th:field="*{questionId}" type="text" class="form-control"
+                                           id="questionId"  >
+                                </div>
+                                <div class="form-group">
+                                    <label for="answerContent" class="col-form-label text-dark">Answer:</label>
+                                    <input th:field="*{content}" type="text" class="form-control" id="answerContent">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <script type="text/javascript" th:inline="javascript">
+
+                function editFunc(event) {
+                    event.preventDefault();
+                    console.log($(this).find('.btn').attr('data-id'));
+                    var rowId = $(this).find('.btn').attr('data-id');
+
+                    var href = "/questions/" + rowId;
+                    var $modal = $('#answerModal').clone();
+
+                    $.get(href, function (question, status) {
+                        $modal.find('#questionId').val(rowId);
+                        $modal.find('#sender-name').html(question.senderEmail);
+                        $modal.find('#questionContent').html(question.content);
+                        $modal.find('#answerType').html(question.answerType);
+                        $modal.find('#answerContent').val(question.answerDto.content);
+                    })
+
+                    $modal.modal();
+                }
+
+                $(document).ready(function () {
+                    $('.edit').on('click', editFunc);
+
+                });
+                $(document).ready(function () {
+                    $('#addRow').on('click', function () {
+                        $("#myTable").prepend("<tr><td>my data</td><td>more data</td></tr>");
+
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

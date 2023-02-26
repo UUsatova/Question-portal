@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.boot.SpringApplication;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +28,10 @@ public class Answer {
     private String content;
     @Column(name = "answer_type")
     private AnswerType answerType;
-
     @Column(name = "question_id")
     private UUID question_id;
+    @Column(name = "isactive")//переименовать
+    private boolean isActive = true;
+    @Column(name = "time")
+    private LocalDateTime localDateTime;
 }

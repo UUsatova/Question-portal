@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface QuestionRepository extends JpaRepository<Question, UUID> {
 
-    @Query("SELECT q FROM Question q WHERE q.isActive = true AND q.senderId=:id")
+    @Query("SELECT q FROM Question q WHERE q.isActive = true AND q.sender.id=:id")
      List<Question> findActiveQuestionsBySenderId(UUID id, Sort sort);
 
-    @Query("SELECT q FROM Question q WHERE q.isActive = true AND q.recipientId=:id")
-    List<Question> findActiveQuestionsByRecipientId(UUID id);
+    @Query("SELECT q FROM Question q WHERE q.isActive = true AND q.recipient.id=:id")
+    List<Question> findActiveQuestionsByRecipientId(UUID id, Sort sort);
 }

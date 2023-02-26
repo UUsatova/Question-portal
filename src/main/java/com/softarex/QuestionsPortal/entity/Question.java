@@ -3,6 +3,9 @@ package com.softarex.QuestionsPortal.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,12 +29,15 @@ public class Question {
     private UUID id;
     @Column(name = "content")
     private String content;
-    @Column(name = "answer_id")
-    private UUID answerId;
-    @Column(name = "recipient_id")
-    private UUID recipientId;
-    @Column(name = "sender_id")
-    private UUID senderId;
+    @OneToOne
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
+    @ManyToOne
+    @JoinColumn(name = "recipient_id")
+    private User recipient;
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
     @Column(name = "answer_type")
     private AnswerType answerType;
     @Column(name = "options")

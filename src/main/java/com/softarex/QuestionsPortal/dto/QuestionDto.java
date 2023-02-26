@@ -24,7 +24,7 @@ public class QuestionDto {
     private UUID id;
     @NotBlank(groups = {Creation.class, Update.class},message = "Must not be blank")
     private String content;
-    private UUID answerId;//надо ли answer content
+    private AnswerDto answerDto;
     @ExistAndActive(groups = {Creation.class, Update.class},message = "Wrong user email")
     private String recipientEmail;
     private String senderEmail;
@@ -33,6 +33,6 @@ public class QuestionDto {
     private LocalDateTime localDateTime;
 
     public String getLocalDateTimeString(){
-        return localDateTime.format(DateTimeFormatter.ofPattern("d:MMM:uuuu HH:mm:ss"));
+        return localDateTime.format(DateTimeFormatter.ofPattern("d MMM uuuu HH:mm"));
     }
 }
