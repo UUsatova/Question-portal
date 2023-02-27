@@ -12,11 +12,11 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     public void configureMessageBroker(MessageBrokerRegistry confi) {
         confi.enableSimpleBroker("/topic");
-        //confi.setApplicationDestinationPrefixes("/");
+       // confi.setApplicationDestinationPrefixes("/answers");
     }
 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ckik").withSockJS();
+        registry.addEndpoint("/answers").withSockJS();
 
     }
 

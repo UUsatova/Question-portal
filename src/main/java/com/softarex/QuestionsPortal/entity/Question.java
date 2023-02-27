@@ -22,13 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "questions")
-public class Question {
-    @Id
-    @Column(name = "id")
-    @UuidGenerator
-    private UUID id;
-    @Column(name = "content")
-    private String content;
+public class Question extends AppItem {
     @OneToOne
     @JoinColumn(name = "answer_id")
     private Answer answer;
@@ -38,13 +32,7 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender;
-    @Column(name = "answer_type")
-    private AnswerType answerType;
     @Column(name = "options")
     private String options;
-    @Column(name = "isactive")//переименовать
-    private boolean isActive=true;
-    @Column(name = "time")
-    private LocalDateTime localDateTime;
 
 }

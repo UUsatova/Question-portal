@@ -7,8 +7,6 @@ import com.softarex.QuestionsPortal.group.Update;
 import com.softarex.QuestionsPortal.mapper.QuestionMapper;
 import com.softarex.QuestionsPortal.service.QuestionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -61,9 +59,6 @@ public class QuestionController {
     }
 
     @PostMapping("/update")
-    //@MessageMapping("/update")
-    //@SendTo("/topic/update")
-
     public String updateQuestion(Model model, @ModelAttribute("question") @Validated(Update.class) QuestionDto questionDto, BindingResult result){
         if (result.hasErrors()) {
             model.addAttribute("allQuestionsUserAsked", questionService.getListWithDtoOffAllQuestionsUserAsked());

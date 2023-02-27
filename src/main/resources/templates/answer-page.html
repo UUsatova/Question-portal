@@ -8,6 +8,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script> <script src="/app.js"></script>
     <style>
         .tab {
             background: #200122;
@@ -127,7 +131,7 @@
                                     <input th:field="*{content}" type="text" class="form-control" id="answerContent">
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary" id="sand">Save</button>
                                     </div>
                                 </div>
                             </form>
@@ -161,14 +165,8 @@
 
                 $(document).ready(function () {
                     $('.edit').on('click', editFunc);
-
                 });
-                $(document).ready(function () {
-                    $('#addRow').on('click', function () {
-                        $("#myTable").prepend("<tr><td>my data</td><td>more data</td></tr>");
 
-                    });
-                });
             </script>
         </div>
     </div>

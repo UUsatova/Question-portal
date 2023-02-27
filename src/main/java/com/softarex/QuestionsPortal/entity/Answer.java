@@ -19,19 +19,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "answers")
-public class Answer {
-    @Id
-    @Column(name = "id")
-    @UuidGenerator
-    private UUID id;
-    @Column(name = "content")
-    private String content;
-    @Column(name = "answer_type")
-    private AnswerType answerType;
+public class Answer extends AppItem {
+
     @Column(name = "question_id")
     private UUID question_id;
-    @Column(name = "isactive")//переименовать
-    private boolean isActive = true;
-    @Column(name = "time")
-    private LocalDateTime localDateTime;
 }
