@@ -41,20 +41,22 @@ public class EmailService {
     }
 
 
-    public void sendMail(EmailTemplate email) throws MessagingException {
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
-                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                StandardCharsets.UTF_8.name());
+    public void sendMail(EmailTemplate email) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
 
-        Context context = new Context();
-        context.setVariables(email.getContext());
-        String emailContent = templateEngine.process(email.getTemplateLocation(), context);
+            Context context = new Context();
+            context.setVariables(email.getContext());
+            String emailContent = templateEngine.process(email.getTemplateLocation(), context);
 
-        mimeMessageHelper.setTo(email.getTo());
-        mimeMessageHelper.setSubject(email.getSubject());
-        mimeMessageHelper.setFrom(email.getFrom());
-        mimeMessageHelper.setText(emailContent, true);
-        emailSender.send(message);
+            mimeMessageHelper.setTo(email.getTo());
+            mimeMessageHelper.setSubject(email.getSubject());
+            mimeMessageHelper.setFrom(email.getFrom());
+            mimeMessageHelper.setText(emailContent, true);
+            emailSender.send(message);
+        }catch (MessagingException e){}
     }
 }

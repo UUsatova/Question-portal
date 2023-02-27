@@ -44,7 +44,7 @@ public class AnswerController {
         question.setAnswer( answerService.addAnswer(answerDto));
         questionService.updateQuestion(question);
         simpMessagingTemplate.convertAndSend("/topic/answers", question);
-        return "redirect:questions";
+        return "redirect:answers";
 
     }
 

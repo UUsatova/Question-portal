@@ -10,7 +10,6 @@ import com.softarex.QuestionsPortal.service.EmailService;
 import com.softarex.QuestionsPortal.service.QuestionService;
 import com.softarex.QuestionsPortal.service.UserService;
 import jakarta.mail.MessagingException;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -41,13 +41,13 @@ public class UserController {
 
     //ситуация когда в базе есть неактивный юзер с таким же имейлом
     @PostMapping("registration")
-    public String registerUserAccount(@ModelAttribute("user") @Validated(Creation.class) UserDtoWithPassword registrationDto, BindingResult result, Model model) throws MessagingException {
-        if (result.hasErrors() || !registrationDto.getPassword().equals(registrationDto.getHelperPassword()) ){
+    public String registerUserAccount(@ModelAttribute("user") @Validated(Creation.class) UserDtoWithPassword registrationDto, BindingResult result, Model model) {
+        if (result.hasErrors() || !registrationDto.getPassword().equals(registrationDto.getHelperPassword())) {
             result.addError(new FieldError("user", "helperPassword", "Passwords dont match"));
             return "registration-page";
         }
         User createdUser = userService.addUser(registrationDto);
-        EmailTemplate email = emailService.getUserCreateEmailTemplate(createdUser,CREATION);
+        EmailTemplate email = emailService.getUserCreateEmailTemplate(createdUser, CREATION);
         emailService.sendMail(email);
         return "redirect:/login?success";
     }
@@ -56,6 +56,12 @@ public class UserController {
     public String showUserDataForm(Model model) {
         model.addAttribute("user", userService.getUserDtoOfAuthenticatedUser());
         return "userData-page";
+    }
+
+    @GetMapping("/name")
+    @ResponseBody
+    public String getAuthUserName(){
+      return  userService.getAuthenticatedUser().getFirstName()+ " " + userService.getAuthenticatedUser().getLastName();
     }
 
     @GetMapping("/delete")

@@ -56,8 +56,6 @@
                 <button type="button" class="btn btn-outline-dark float-sm-right" data-toggle="modal"
                         data-target="#createQuestionModal">+ Add question
                 </button>
-                <button type="button" class="btn btn-outline-dark float-sm-right" id="addRow">+ Add row
-                </button>
             </h3>
 
             <table class="table" id="myTable">
@@ -237,12 +235,13 @@
                     $('.edit').on('click',editFunc );
 
                 });
-                $(document).ready(function () {
-                    $('#addRow').on('click', function () {
-                        $("#myTable").prepend("<tr><td>my data</td><td>more data</td></tr>");
-
-                        });
+            </script>
+            <script>  document.addEventListener("DOMContentLoaded",getName())
+            function getName () {
+                $.get("/user/name",function (name,status){
+                    $("#navbardrop").html(name);
                 });
+            };
             </script>
         </div>
     </div>

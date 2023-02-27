@@ -168,6 +168,13 @@
                 });
 
             </script>
+            <script>  document.addEventListener("DOMContentLoaded",getName())
+            function getName () {
+                $.get("/user/name",function (name,status){
+                    $("#navbardrop").html(name);
+                });
+            };
+            </script>
         </div>
     </div>
 </div>

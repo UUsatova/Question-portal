@@ -53,7 +53,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-offset-3 col-md-6"> <!-- ?????? ? ???????? ???????-->
+        <div class="col-md-6 offset-md-3"> <!-- ?????? ? ???????? ???????-->
 
 
 
@@ -81,8 +81,9 @@
                     <li>number:
                         <th th:text="${user.number}">number</th>
                     </li>
-                        </div >
+
                 </ul>
+                </div >
 
                 <hr>
 
@@ -90,5 +91,13 @@
     </div>
 </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded",getName())
+    function getName () {
+    $.get("/user/name",function (name,status){
+        $("#navbardrop").html(name);
+    });
+};
+</script>
 </body>
 </html>
