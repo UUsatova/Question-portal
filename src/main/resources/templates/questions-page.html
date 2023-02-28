@@ -8,42 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <style>
-        .tab {
-            background: #200122;
-            background: -webkit-linear-gradient(to bottom, #6f0000, #200122);
-            background: linear-gradient(to bottom, #6f0000, #200122);
-            padding: 40px 50px;
-            position: relative;
-            border-radius: 20px;
-        }
 
-        .tab:before {
-            content: "";
-            width: 100%;
-            height: 100%;
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: linear-gradient(#2e3a6a, #2f0b45);
-            opacity: 0.85;
-            border-radius: 20px;
-        }
-
-        .form-group {
-            font-size: 14px;
-            font-weight: bold;
-            color: #fff;
-            text-transform: capitalize;
-            opacity: .85;
-        }
-
-        .navbar {
-            background: #200122;
-            background: linear-gradient(#2e3a6a, #2f0b45);
-        }
-    </style>
+    <link th:href="@{/css/question.css}" type="text/css" rel="stylesheet" href="../public/css/question.css" >
 </head>
 <body>
 <th:block th:replace="fragments/header :: header"></th:block>
@@ -140,7 +106,7 @@
                                     <textarea class="form-control" id="option"></textarea>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">Close</button>
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </form>
@@ -208,12 +174,14 @@
 
                 });
                 function editFunc (event) {
+                    $(this).find('#editQuestionWindow').remove();
+
                     event.preventDefault();
                     console.log( $(this).find('.btn').attr('data-id'));
                     var rowId = $(this).find('.btn').attr('data-id');
 
                     var href = "/questions/"+rowId;
-                    var $modal = $('#createQuestionModal').clone().attr('id','editQuestionWindow');
+                    var $modal = $('#createQuestionModal').clone().attr('id','editQuestionWindow'+rowId);
 
                     $.get(href,function (question,status){
                         $modal.find('exampleModalLabel').text("Edit question")
@@ -229,11 +197,12 @@
                     })
                     $modal.find('form').attr('action','/questions/update');
 
+
+
                     $modal.modal();
                 }
                 $(document).ready( function () {
                     $('.edit').on('click',editFunc );
-
                 });
             </script>
             <script>  document.addEventListener("DOMContentLoaded",getName())
