@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,17 +39,27 @@ public class SecurityConfig {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/icon/**");
+    }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
-
-        http.authorizeHttpRequests().requestMatchers("/js/**", "/css/**").permitAll();
-        http.authorizeHttpRequests().requestMatchers("/user/registration")
-                .permitAll();
-        http.formLogin().loginPage("/login").defaultSuccessUrl("/login/ok")
-                .permitAll();
-
-        http.authorizeHttpRequests().anyRequest().authenticated();
+        http
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers( "/user/registration").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin((form) -> form
+                        .loginPage("/login").defaultSuccessUrl("/login/ok")
+                        .permitAll()
+                )
+                .logout((logout) -> logout.permitAll());
 
         http.httpBasic();
         return http.build();
