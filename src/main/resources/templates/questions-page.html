@@ -152,12 +152,12 @@
 
             <script>
                 $(document).ready(function () {
-                    $('#inputGroupSelect01').on('change', function () {
+                    $('#answerType').on('change', function () {
                         $("#options").hide();
-                        console.log($('#inputGroupSelect01 option:selected').val());
-                        if ($('#inputGroupSelect01 option:selected').val() === 'COMBOBOX'
-                            || $('#inputGroupSelect01 option:selected').val() === 'CHECKBOX'
-                            || $('#inputGroupSelect01 option:selected').val() === 'RADIO_BUTTON') $("#options").show();
+                        console.log($('#answerType option:selected').val());
+                        if ($('#answerType option:selected').val() === 'COMBOBOX'
+                            || $('#answerType option:selected').val() === 'CHECKBOX'
+                            || $('#answerType option:selected').val() === 'RADIO_BUTTON') $("#options").show();
                     });
                 });</script>
             <script type="text/javascript" th:inline="javascript">

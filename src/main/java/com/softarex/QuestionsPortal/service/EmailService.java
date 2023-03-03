@@ -57,6 +57,6 @@ public class EmailService {
             mimeMessageHelper.setFrom(email.getFrom());
             mimeMessageHelper.setText(emailContent, true);
             emailSender.send(message);
-        }catch (MessagingException e){}
+        }catch (Throwable e){ }
     }
 }

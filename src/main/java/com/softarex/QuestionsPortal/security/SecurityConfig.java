@@ -52,11 +52,11 @@ public class SecurityConfig {
         http.csrf().disable();
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers( "/user/registration").permitAll()
+                        .requestMatchers( "/user/registration","/login**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/login").defaultSuccessUrl("/login/ok")
+                        .loginPage("/login").defaultSuccessUrl("/user/show")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
